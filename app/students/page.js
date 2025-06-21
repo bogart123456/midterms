@@ -1,13 +1,34 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+// app/students/page.js
+import './students.css';
+import Link from 'next/link';
+import { fetchData } from '../lib/data';
 
-export default function Home() {
+export default async function StudentsPage() {
+  const students = await fetchData();
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1>Test</h1>
-        
-      </main>
+    <div className="page-container">
+      <h1>Student List</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Course</th>
+          </tr>
+        </thead>
+        <tbody>
+          {students.map((student, index) => (
+            <tr key={student.id}>
+              <td>{index + 1}</td>
+              <td>
+                <Link href={`/students/${student.id}`}>{student.name}</Link>
+              </td>
+              <td>{student.course}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
